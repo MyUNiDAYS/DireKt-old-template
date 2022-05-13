@@ -3,10 +3,10 @@ package com.myunidays.router
 import com.myunidays.transition.Transition
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class RouterImpl<Config: RoutingConfig, Child>(
+class RouterImpl<Config : RoutingConfig, Child>(
     initial: Config,
     private val childFactory: (configuration: Config) -> Child
-): Router<Config, Child> {
+) : Router<Config, Child> {
 
     override val activeChild: Config get() = stack.value.second
     override val stack: MutableStateFlow<Pair<Transition, Config>> = MutableStateFlow(Transition.Push to initial)
@@ -43,5 +43,4 @@ class RouterImpl<Config: RoutingConfig, Child>(
     override fun handleDeeplink(deeplink: String) {
         TODO("Not yet implemented")
     }
-
 }

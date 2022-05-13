@@ -4,7 +4,7 @@ import com.myunidays.transition.Transition
 import kotlinx.coroutines.flow.emptyFlow
 
 // We can use this empty router for the 'native' views which are unbound by KMM - maybe could be used for testing too.
-class EmptyRouterImpl<Config: RoutingConfig, Child>: Router<Config, Child> {
+class EmptyRouterImpl<Config : RoutingConfig, Child> : Router<Config, Child> {
     override val stack = emptyFlow<Pair<Transition, Config>>()
     override val canGoBack = false
 
@@ -17,5 +17,5 @@ class EmptyRouterImpl<Config: RoutingConfig, Child>: Router<Config, Child> {
     override fun canHandleDeeplink(deeplink: String): Boolean = false
     override fun handleDeeplink(deeplink: String) = throw EmptyRouterException()
 
-    class EmptyRouterException: Exception("Cannot call method on Empty Router")
+    class EmptyRouterException : Exception("Cannot call method on Empty Router")
 }
