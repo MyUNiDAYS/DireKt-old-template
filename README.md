@@ -18,6 +18,10 @@ TODO
 
 TODO
 
+## Known Issues
+
+Currently, yet to implement support for Deeplinking.
+
 ## Contributing
 
 This project is set up as an open source project. As such, if there are any suggestions that you have for features, for improving the code itself, or you have come across any problems; you can raise them and/or suggest changes in implementation.
