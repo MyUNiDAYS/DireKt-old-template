@@ -2,9 +2,11 @@ package com.myunidays.router
 
 import com.myunidays.transition.Transition
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlin.reflect.KClass
 
 class RouterImpl<Config : RoutingConfig, Child>(
     initial: Config,
+    private val childTypeFactory: (configuration: Config) -> KClass<*>,
     private val childFactory: (configuration: Config) -> Child
 ) : Router<Config, Child> {
 
@@ -34,6 +36,7 @@ class RouterImpl<Config : RoutingConfig, Child>(
     }
 
     override fun createChild(config: Config) = childFactory(config)
+    override fun typeForConfig(config: Config): KClass<*> = childTypeFactory(config)
 
     // Deeplinking stuff
     override fun canHandleDeeplink(deeplink: String): Boolean {

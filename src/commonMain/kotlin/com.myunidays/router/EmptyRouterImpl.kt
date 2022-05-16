@@ -2,6 +2,7 @@ package com.myunidays.router
 
 import com.myunidays.transition.Transition
 import kotlinx.coroutines.flow.emptyFlow
+import kotlin.reflect.KClass
 
 // We can use this empty router for the 'native' views which are unbound by KMM - maybe could be used for testing too.
 class EmptyRouterImpl<Config : RoutingConfig, Child> : Router<Config, Child> {
@@ -12,6 +13,7 @@ class EmptyRouterImpl<Config : RoutingConfig, Child> : Router<Config, Child> {
     override suspend fun pop() = throw EmptyRouterException()
     override suspend fun replace(config: Config) = throw EmptyRouterException()
     override fun createChild(config: Config) = throw EmptyRouterException()
+    override fun typeForConfig(config: Config): KClass<*> = throw EmptyRouterException()
     override val activeChild: Config? = null
 
     override fun canHandleDeeplink(deeplink: String): Boolean = false
