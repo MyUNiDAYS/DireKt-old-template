@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.myunidays"
-version = "0.0.2"
+version = "0.0.3"
 
 val frameworkName = "direkt"
 val coroutines_version = "1.6.0-native-mt"

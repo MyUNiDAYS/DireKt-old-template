@@ -17,7 +17,6 @@ interface Router<Config : RoutingConfig, Child> {
     suspend fun replace(config: Config)
 
     fun createChild(config: Config): Child
-    fun typeForConfig(config: Config): KClass<*>
 
     // deeplink stuff
     fun canHandleDeeplink(deeplink: String): Boolean
