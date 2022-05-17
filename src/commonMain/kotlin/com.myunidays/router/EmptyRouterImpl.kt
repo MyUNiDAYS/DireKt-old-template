@@ -2,7 +2,6 @@ package com.myunidays.router
 
 import com.myunidays.transition.Transition
 import kotlinx.coroutines.flow.emptyFlow
-import kotlin.reflect.KClass
 
 // We can use this empty router for the 'native' views which are unbound by KMM - maybe could be used for testing too.
 class EmptyRouterImpl<Config : RoutingConfig, Child> : Router<Config, Child> {

@@ -2,7 +2,6 @@ package com.myunidays.router
 
 import com.myunidays.transition.Transition
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlin.reflect.KClass
 
 class RouterImpl<Config : RoutingConfig, Child>(
     initial: Config,
