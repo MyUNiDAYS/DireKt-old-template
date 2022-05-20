@@ -12,11 +12,48 @@ implementation("com.myunidays:direkt:0.0.3")
 
 ## How to use
 
-TODO 
+We recommend using the coordinator pattern but it's not neccessary. 
+
+Create a subclass of the RoutingConfig, expose the screens you want to route and what constructor params they need. 
+```kotlin
+sealed class RootConfig(key: String): RoutingConfig(key) {
+    object Dashboard: RootConfig("Dashboard")
+    object Standard: RootConfig("Standard")
+}
+```
+
+Create a function to create those screens.
+```kotlin
+fun createChild(config: RootConfig): ScreenInterface = when (config) {
+        RootConfig.Dashboard -> DashboardViewModel()
+        RootConfig.Standard -> StandardViewModel()
+}
+```
+
+Then create an instance of the RouterImpl or implement the interface Router.
+```kotlin
+val router = RouterImpl<RootConfig, ScreenInterface>(
+    RootConfig.Dashboard,
+    ::createChild
+)
+```
+
+To listen to route changes
+```kotlin
+router.stack.collect { (transition, config) ->
+    if (transition == Transition.Push) {
+        println("Pushed route $config")   
+    }
+```
+
+To request a route change, where RootConfig.Standard is an entry in the config defined before.
+```kotlin
+router.push(RootConfig.Standard)
+```
 
 ## Examples
 
-TODO
+In the Examples folder, there is an example using KMM with coordinators targeting iOS and Android.
 
 ## Known Issues
 
