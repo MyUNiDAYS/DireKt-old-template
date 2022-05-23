@@ -3,8 +3,8 @@ package com.myunidays.router
 import app.cash.turbine.test
 import com.myunidays.transition.Transition
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
 import kotlin.test.BeforeTest
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class RouterTests {
@@ -73,12 +73,10 @@ class RouterTests {
         TestConfig.Three -> TODO()
         TestConfig.Two -> TODO()
     }
-
 }
 
-
-sealed class TestConfig(key: String, params: Map<String, String>): RoutingConfig(key, params) {
-    object One: TestConfig("One", emptyMap())
-    object Two: TestConfig("Two", emptyMap())
-    object Three: TestConfig("Three", emptyMap())
+sealed class TestConfig(key: String, params: Map<String, String>) : RoutingConfig(key, params) {
+    object One : TestConfig("One", emptyMap())
+    object Two : TestConfig("Two", emptyMap())
+    object Three : TestConfig("Three", emptyMap())
 }
