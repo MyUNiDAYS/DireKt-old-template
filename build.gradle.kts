@@ -21,7 +21,14 @@ repositories {
 
 kotlin {
     js(BOTH) {
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                    useFirefox()
+                }
+            }
+        }
     }
     val xcf = XCFramework()
     iosSimulatorArm64 {
@@ -49,6 +56,8 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version")
+                implementation("app.cash.turbine:turbine:0.7.0")
             }
         }
 
