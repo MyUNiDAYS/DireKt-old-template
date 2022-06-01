@@ -7,7 +7,7 @@ The DireKT Kotlin SDK is a completely decoupled Routing library that is not plat
 ### KMM
 
 ```
-implementation("com.myunidays:direkt:0.0.3")
+implementation("com.myunidays:direkt:0.0.4")
 ```
 
 ## How to use

@@ -9,7 +9,7 @@ group = "com.myunidays"
 version = "1.0-SNAPSHOT"
 
 val frameworkName = "library"
-val direkt_version = "0.0.3"
+val direkt_version = "0.0.4"
 val coroutines_version = "1.6.0-native-mt"
 
 kotlin {
