@@ -6,6 +6,7 @@ import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class RouterTests {
 
@@ -13,9 +14,10 @@ class RouterTests {
 
     @BeforeTest
     fun setup() {
-        router = RouterImpl<TestConfig, Any>(
+        router = RouterImpl(
             TestConfig.One,
-            ::createChild
+            ::createChild,
+            ::configForName
         )
     }
 
@@ -68,15 +70,47 @@ class RouterTests {
         }
     }
 
+    @Test
+    fun testDeeplinks() = runTest {
+        router.handleDeeplink("Direkt://Four?id=123&abc=hi")
+        router.stack.test {
+            val firstConfig = awaitItem()
+            assertTrue { firstConfig.second is TestConfig.Four }
+            assertEquals("123", (firstConfig.second as TestConfig.Four).id)
+
+            router.handleDeeplink("Direkt://Two?id=123&abc=hi")
+            val secondConfig = awaitItem()
+            assertTrue { secondConfig.second is TestConfig.Two }
+
+            router.handleDeeplink("direkt://three?id=123")
+            val thirdConfig = awaitItem()
+            assertTrue { thirdConfig.second is TestConfig.Three }
+        }
+    }
+
     private fun createChild(config: TestConfig): Any = when (config) {
         TestConfig.One -> TODO()
         TestConfig.Three -> TODO()
         TestConfig.Two -> TODO()
+        is TestConfig.Four -> TODO()
     }
+
+    private fun configForName(name: String, params: Map<String, List<String>>): TestConfig? =
+        when (name.lowercase()) {
+            "one" -> TestConfig.One
+            "two" -> TestConfig.Two
+            "three" -> TestConfig.Three
+            "four" -> TestConfig.Four(params["id"]!!.first())
+            else -> null
+        }
 }
 
-sealed class TestConfig(key: String, params: Map<String, String>) : RoutingConfig(key, params) {
-    object One : TestConfig("One", emptyMap())
-    object Two : TestConfig("Two", emptyMap())
-    object Three : TestConfig("Three", emptyMap())
+sealed class TestConfig(
+    key: String,
+) : RoutingConfig(key) {
+
+    object One : TestConfig("One")
+    object Two : TestConfig("Two")
+    object Three : TestConfig("Three")
+    class Four(val id: String) : TestConfig("Four")
 }

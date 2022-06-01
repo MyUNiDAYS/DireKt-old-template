@@ -9,10 +9,11 @@ plugins {
 }
 
 group = "com.myunidays"
-version = "0.0.3"
+version = "0.0.4"
 
 val frameworkName = "direkt"
 val coroutines_version = "1.6.0-native-mt"
+val ktor_version = "2.0.0"
 
 repositories {
     google()
@@ -51,6 +52,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
+                implementation("io.ktor:ktor-http:$ktor_version")
             }
         }
         val commonTest by getting {

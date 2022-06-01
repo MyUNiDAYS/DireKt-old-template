@@ -14,8 +14,7 @@ class EmptyRouterImpl<Config : RoutingConfig, Child> : Router<Config, Child> {
     override fun createChild(config: Config) = throw EmptyRouterException()
     override val activeChild: Config? = null
 
-    override fun canHandleDeeplink(deeplink: String): Boolean = false
-    override fun handleDeeplink(deeplink: String) = throw EmptyRouterException()
+    override suspend fun handleDeeplink(deeplink: String) = throw EmptyRouterException()
 
     class EmptyRouterException : Exception("Cannot call method on Empty Router")
 }

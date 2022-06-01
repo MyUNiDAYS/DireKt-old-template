@@ -18,6 +18,5 @@ interface Router<Config : RoutingConfig, Child> {
     fun createChild(config: Config): Child
 
     // deeplink stuff
-    fun canHandleDeeplink(deeplink: String): Boolean
-    fun handleDeeplink(deeplink: String)
+    suspend fun handleDeeplink(deeplink: String): String
 }
