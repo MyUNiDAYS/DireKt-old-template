@@ -46,6 +46,9 @@ kotlin {
     }
     android {
         publishAllLibraryVariants()
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
     }
 
     sourceSets {
