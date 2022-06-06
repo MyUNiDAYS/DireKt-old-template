@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
-    kotlin("multiplatform") version "1.6.0"
+    kotlin("multiplatform") version "1.6.21"
     id("com.android.library") version "7.1.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     `maven-publish`

@@ -8,7 +8,7 @@ buildscript {
         maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-coroutines/maven")
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.0")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
         classpath("com.android.tools.build:gradle:4.2.2")
     }
 }

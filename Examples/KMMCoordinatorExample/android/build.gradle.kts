@@ -54,7 +54,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
-        kotlinCompilerVersion = "1.6.0"
+        kotlinCompilerVersion = "1.6.21"
     }
     packagingOptions {
 //        resources {
