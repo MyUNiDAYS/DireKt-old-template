@@ -12,6 +12,8 @@ class RouterTests {
 
     lateinit var router: Router<TestConfig, Any>
 
+    private val timeout = 5000L
+
     @BeforeTest
     fun setup() {
         router = RouterImpl(
@@ -22,7 +24,7 @@ class RouterTests {
 
     @Test
     fun testPushOfConfigWorks() = runTest {
-        router.stack.test {
+        router.stack.test(timeout) {
             awaitItem().let { (transition, config) ->
                 assertEquals(TestConfig.One, config)
                 assertEquals(Transition.Push, transition)
@@ -37,7 +39,7 @@ class RouterTests {
 
     @Test
     fun testPopOfConfigWorks() = runTest {
-        router.stack.test {
+        router.stack.test(timeout) {
             awaitItem()
             router.push(TestConfig.Two)
             awaitItem().let { (transition, config) ->
@@ -54,7 +56,7 @@ class RouterTests {
 
     @Test
     fun testReplaceOfConfigWorks() = runTest {
-        router.stack.test {
+        router.stack.test(timeout) {
             awaitItem()
             router.push(TestConfig.Two)
             awaitItem().let { (transition, config) ->
@@ -72,7 +74,7 @@ class RouterTests {
     @Test
     fun testDeeplinks() = runTest {
         router.handleDeeplink("Direkt://Four?id=123&abc=hi")
-        router.stack.test {
+        router.stack.test(timeout) {
             val firstConfig = awaitItem()
             assertTrue { firstConfig.second is TestConfig.Four }
             assertEquals("123", (firstConfig.second as TestConfig.Four).id)
