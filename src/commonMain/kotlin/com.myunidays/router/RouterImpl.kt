@@ -58,6 +58,6 @@ class RouterImpl<Config : RoutingConfig, Child>(
                 }
             }
         }
-        .onFailure { println("Failed to parse deeplink $deeplink $it") }
-        .getOrNull()
+            .onFailure { println("Failed to parse deeplink $deeplink $it") }
+            .getOrNull()
 }
