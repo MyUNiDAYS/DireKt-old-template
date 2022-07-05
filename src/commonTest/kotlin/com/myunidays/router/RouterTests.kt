@@ -1,8 +1,9 @@
 package com.myunidays.router
 
 import app.cash.turbine.test
+import com.myunidays.dispatcher.runTestOnTestDispatchers
 import com.myunidays.transition.Transition
-import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.Dispatchers
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,6 +14,7 @@ class RouterTests {
     lateinit var router: Router<TestConfig, Any>
 
     private val timeout = 5000L
+    private val coroutineContext = Dispatchers.Default
 
     @BeforeTest
     fun setup() {
@@ -23,7 +25,7 @@ class RouterTests {
     }
 
     @Test
-    fun testPushOfConfigWorks() = runTest {
+    fun testPushOfConfigWorks() = runTestOnTestDispatchers {
         router.stack.test(timeout) {
             awaitItem().let { (transition, config) ->
                 assertEquals(TestConfig.One, config)
@@ -38,7 +40,7 @@ class RouterTests {
     }
 
     @Test
-    fun testPopOfConfigWorks() = runTest {
+    fun testPopOfConfigWorks() = runTestOnTestDispatchers {
         router.stack.test(timeout) {
             awaitItem()
             router.push(TestConfig.Two)
@@ -55,7 +57,7 @@ class RouterTests {
     }
 
     @Test
-    fun testReplaceOfConfigWorks() = runTest {
+    fun testReplaceOfConfigWorks() = runTestOnTestDispatchers {
         router.stack.test(timeout) {
             awaitItem()
             router.push(TestConfig.Two)
@@ -72,7 +74,7 @@ class RouterTests {
     }
 
     @Test
-    fun testDeeplinks() = runTest {
+    fun testDeeplinks() = runTestOnTestDispatchers {
         router.handleDeeplink("Direkt://Four?id=123&abc=hi")
         router.stack.test(timeout) {
             val firstConfig = awaitItem()

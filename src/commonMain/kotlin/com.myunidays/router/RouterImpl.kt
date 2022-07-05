@@ -1,16 +1,18 @@
 package com.myunidays.router
 
+import com.myunidays.dispatcher.DefaultDispatcherProvider
+import com.myunidays.dispatcher.DispatcherProvider
 import com.myunidays.transition.Transition
 import io.ktor.http.Url
 import io.ktor.util.toMap
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
 class RouterImpl<Config : RoutingConfig, Child>(
     initial: Config,
     private val configForName: (name: String, params: Map<String, List<String>>) -> Config?,
+    dispatcher: DispatcherProvider = DefaultDispatcherProvider()
 ) : Router<Config, Child> {
 
     override val activeChild: Config? get() = _stack.lastOrNull()
@@ -23,7 +25,7 @@ class RouterImpl<Config : RoutingConfig, Child>(
     override val canGoBack: Boolean get() = _stack.size > 1
 
     init {
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(dispatcher.default()).launch {
             push(initial)
         }
     }
