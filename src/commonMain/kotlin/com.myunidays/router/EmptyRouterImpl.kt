@@ -11,7 +11,6 @@ class EmptyRouterImpl<Config : RoutingConfig, Child> : Router<Config, Child> {
     override suspend fun push(config: Config) = throw EmptyRouterException()
     override suspend fun pop() = throw EmptyRouterException()
     override suspend fun replace(config: Config) = throw EmptyRouterException()
-    override fun createChild(config: Config) = throw EmptyRouterException()
     override val activeChild: Config? = null
 
     override suspend fun handleDeeplink(deeplink: String) = throw EmptyRouterException()

@@ -15,8 +15,6 @@ interface Router<Config : RoutingConfig, Child> {
     suspend fun pop()
     suspend fun replace(config: Config)
 
-    fun createChild(config: Config): Child
-
     // deeplink stuff
-    suspend fun handleDeeplink(deeplink: String): String
+    suspend fun handleDeeplink(deeplink: String): String?
 }

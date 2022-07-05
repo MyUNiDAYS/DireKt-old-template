@@ -16,7 +16,6 @@ class RouterTests {
     fun setup() {
         router = RouterImpl(
             TestConfig.One,
-            ::createChild,
             ::configForName
         )
     }
@@ -86,13 +85,6 @@ class RouterTests {
             val thirdConfig = awaitItem()
             assertTrue { thirdConfig.second is TestConfig.Three }
         }
-    }
-
-    private fun createChild(config: TestConfig): Any = when (config) {
-        TestConfig.One -> TODO()
-        TestConfig.Three -> TODO()
-        TestConfig.Two -> TODO()
-        is TestConfig.Four -> TODO()
     }
 
     private fun configForName(name: String, params: Map<String, List<String>>): TestConfig? =

@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.myunidays"
-version = "0.0.4"
+version = "0.0.5"
 
 val frameworkName = "direkt"
 val coroutines_version = "1.6.0-native-mt"
@@ -26,7 +26,6 @@ kotlin {
             testTask {
                 useKarma {
                     useChromeHeadless()
-                    useFirefox()
                 }
             }
         }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 
 class RouterImpl<Config : RoutingConfig, Child>(
     initial: Config,
-    private val childFactory: (configuration: Config) -> Child,
     private val configForName: (name: String, params: Map<String, List<String>>) -> Config?,
 ) : Router<Config, Child> {
 
@@ -45,11 +44,9 @@ class RouterImpl<Config : RoutingConfig, Child>(
         stack.emit(Transition.Replace to config)
     }
 
-    override fun createChild(config: Config) = childFactory(config)
-
     // we could have a more generic function, router.supportsConfig(key)?
     // Deeplinking stuff
-    override suspend fun handleDeeplink(deeplink: String): String =
+    override suspend fun handleDeeplink(deeplink: String): String? =
         runCatching {
             Url(deeplink).let { deeplinkUrl ->
                 return@runCatching configForName(
@@ -58,9 +55,9 @@ class RouterImpl<Config : RoutingConfig, Child>(
                 )?.let { config ->
                     push(config)
                     return deeplink
-                } ?: deeplink
+                }
             }
         }
-            .onFailure { println("Failed to parse deeplink $deeplink $it") }
-            .getOrNull() ?: deeplink
+        .onFailure { println("Failed to parse deeplink $deeplink $it") }
+        .getOrNull()
 }

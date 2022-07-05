@@ -7,7 +7,7 @@ The DireKT Kotlin SDK is a completely decoupled Routing library that is not plat
 ### KMM
 
 ```
-implementation("com.myunidays:direkt:0.0.4")
+implementation("com.myunidays:direkt:0.0.5")
 ```
 
 ## How to use
@@ -34,7 +34,7 @@ Then create an instance of the RouterImpl or implement the interface Router.
 ```kotlin
 val router = RouterImpl<RootConfig, ScreenInterface>(
     RootConfig.Dashboard,
-    ::createChild
+    ::configForName
 )
 ```
 
@@ -57,7 +57,7 @@ In the Examples folder, there is an example using KMM with coordinators targetin
 
 ## Known Issues
 
-Currently, yet to implement support for Deeplinking.
+Currently, basic support for Deeplinking.
 
 ## Contributing
 
