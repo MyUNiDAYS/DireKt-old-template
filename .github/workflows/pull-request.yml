@@ -15,3 +15,9 @@ jobs:
           java-version: '11'
       - name: Run gradle build
         run: ./gradlew build
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: tests
+          path: /Users/runner/work/DireKt/DireKt/build/reports/tests/*
+          if-no-files-found: warn
