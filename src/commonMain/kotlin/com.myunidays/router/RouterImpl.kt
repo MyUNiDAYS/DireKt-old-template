@@ -6,25 +6,31 @@ import com.myunidays.transition.Transition
 import io.ktor.http.Url
 import io.ktor.util.toMap
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class RouterImpl<Config : RoutingConfig, Child>(
     initial: Config,
     private val configForName: (name: String, params: Map<String, List<String>>) -> Config?,
     dispatcher: DispatcherProvider = DefaultDispatcherProvider()
-) : Router<Config, Child> {
+) : Router<Config, Child>, RouterTransitions<Config, Child> {
 
     override val activeChild: Config? get() = _stack.lastOrNull()
     override val stack: MutableSharedFlow<Pair<Transition, Config>> = MutableSharedFlow(1)
     private val _stack: MutableList<Config> = mutableListOf()
 
     // Jacobs Idea: We could store the whole list of changes, so that we could replay in the case of a crash.
-    private val stackHistory: MutableList<Pair<Transition, Config>> = mutableListOf()
+    private val _stackHistory: MutableStateFlow<List<Pair<Transition, Config>>> = MutableStateFlow(emptyList())
+    override val stackHistory: StateFlow<List<Pair<Transition, Config>>> = _stackHistory
 
     override val canGoBack: Boolean get() = _stack.size > 1
 
     init {
+        CoroutineScope(dispatcher.default()).launch {
+            stack.collect { transitionConfig ->
+                _stackHistory.emit(_stackHistory.value + transitionConfig)
+            }
+        }
         CoroutineScope(dispatcher.default()).launch {
             push(initial)
         }
@@ -51,11 +57,20 @@ class RouterImpl<Config : RoutingConfig, Child>(
     override suspend fun handleDeeplink(deeplink: String): String? =
         runCatching {
             Url(deeplink).let { deeplinkUrl ->
+                val parameters = deeplinkUrl.parameters.toMap()
+                if (parameters[Transition.key]?.firstOrNull() == Transition.Pop.name) {
+                    pop()
+                    return deeplink
+                }
                 return@runCatching configForName(
                     deeplinkUrl.host,
-                    deeplinkUrl.parameters.toMap()
+                    parameters
                 )?.let { config ->
-                    push(config)
+                    when (config.transition) {
+                        Transition.Push -> push(config)
+                        Transition.Pop -> pop()
+                        Transition.Replace -> replace(config)
+                    }
                     return deeplink
                 }
             }
