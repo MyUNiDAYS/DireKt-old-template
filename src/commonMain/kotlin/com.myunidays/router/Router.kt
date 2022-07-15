@@ -15,4 +15,3 @@ interface Router<Config : RoutingConfig, Child> {
     // deeplink stuff
     suspend fun handleDeeplink(deeplink: String): String?
 }
-
