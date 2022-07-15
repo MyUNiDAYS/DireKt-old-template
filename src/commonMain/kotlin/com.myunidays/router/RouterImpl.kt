@@ -52,6 +52,11 @@ class RouterImpl<Config : RoutingConfig, Child>(
         stack.emit(Transition.Replace to config)
     }
 
+    override suspend fun update(config: Config) {
+        _stack.add(config)
+        stack.emit(Transition.Update to config)
+    }
+
     // we could have a more generic function, router.supportsConfig(key)?
     // Deeplinking stuff
     override suspend fun handleDeeplink(deeplink: String): String? =
@@ -70,6 +75,7 @@ class RouterImpl<Config : RoutingConfig, Child>(
                         Transition.Push -> push(config)
                         Transition.Pop -> pop()
                         Transition.Replace -> replace(config)
+                        Transition.Update -> update(config)
                     }
                     return deeplink
                 }

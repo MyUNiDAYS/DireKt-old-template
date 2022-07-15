@@ -5,7 +5,8 @@ import com.myunidays.router.RoutingConfig
 enum class Transition {
     Push,
     Pop,
-    Replace;
+    Replace,
+    Update;
     companion object {
         val key: String = "transition"
     }

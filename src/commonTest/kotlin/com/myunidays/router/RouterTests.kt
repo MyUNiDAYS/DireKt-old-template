@@ -11,7 +11,7 @@ import kotlin.test.assertTrue
 
 class RouterTests {
 
-    lateinit var router: Router<TestConfig, Any>
+    lateinit var router: RouterImpl<TestConfig, Any>
 
     private val timeout = 5000L
     private val coroutineContext = Dispatchers.Default
